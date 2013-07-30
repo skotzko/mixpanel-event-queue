@@ -2,7 +2,7 @@ mixpanel-event-queue (MEQ)
 ====================
 Contributors: [skotzko](https://github.com/skotzko)
 
-Version: 0.1.0
+Version: 0.1.1
 
 Tags: mixpanel, analytics, events, queue, javascript
 
@@ -14,7 +14,7 @@ Provides an event-queueing wrapper for the Mixpanel JS API to ensure tracking ca
 ### Why use this?
 The minified Mixpanel library is ~25.5kb gzipped and can take up to a few seconds after browser `startFetch` to be fully loaded and available for handling event / tracking calls. 
 
-Many analytics services (e.g. Google Analytics, KISSmetrics) stub out an array which acts as a queue while the tracking library is loaded. The Mixpanel JS API does not natively provide this functionality, and I wanted it to ensure that my tracking calls would not (a) lose data and (b) throw JS errors if the library was not yet loaded.
+Many analytics services (e.g. Google Analytics, KISSmetrics) stub out an array which acts as a queue while the tracking library loads. The Mixpanel JS API does not natively provide this functionality, and I wanted it to ensure that my tracking calls would not (a) lose data and (b) throw JS errors if the library was not yet loaded.
 
 This wrapper aims to extend the Mixpanel JS library with this functionality.
 
@@ -34,7 +34,7 @@ After the Mixpanel library is loaded, any calls into MEQ will bypass the queue f
 
 
 ## Typical usage
-MEQ provides two functions: `_meq.mixpanel()` and `_meq.flush()`. The first is the core wrapper of the Mixpanel API. The second is a 
+MEQ provides two functions: `_meq.mixpanel()` and `_meq.flush()`. The first is the core wrapper of the Mixpanel API. The second is a function to flush the queue as the callback when the core Mixpanel library finishes loading.
 
 This wraps the Mixpanel library and replaces all calls to `mixpanel.<function name>`.
 
@@ -42,36 +42,39 @@ MEQ supports the full range of API calls that the native Mixpanel library does. 
 
 The first parameter passed to `_meq` is the full name of the native Mixpanel function you want to call, i.e. `track`, `people.set_once`, `people.append`. It would be everything after 'mixpanel.' in the native API call.
 
-The second parameter to `_meq` is an array of the arguments you would pass to the native Mixpanel call. This could be `['eventName', {eventProperty1: value1}]` in the case of a `track` call, or would just be `[{property1: value1}]` in a `people` call. 
+The second / third parameters to `_meq` are the event name (if using a `track` call) and an optional `properties` object. **These parametrs are passed/formatted exactly as they are when you are calling into the native Mixpanel JS fuctions.**
 
 ### Examples
 #### `track()` call
-`mixpanel.track('event_name', {'property1': 'value1', 'property2': 'value2'})` ==> `_meq.mixpanel('track', ['event_name', {'property1': 'value1', 'property2': 'value2'}])`
+`mixpanel.track('event_name', {'property1': 'value1', 'property2': 'value2'})` ==> `_meq.mixpanel('track', 'event_name', {'property1': 'value1', 'property2': 'value2'})`
 
 
 #### `people()` calls
-`mixpanel.people.set({'likes_ice_cream': true})` ==> `_meq.mixpanel('people.set', [])`
-`mixpanel.people.set_once({'user_uuid': 'abcd-1234-abcd-1234-abcd'})` ==> `_meq.mixpanel('people.set_once', [{'user_uuid': 'abcd-1234-abcd-1234-abcd'}])`
-`mixpanel.people.increment('purchases')` ==> `_meq.mixpanel('people.increment', ['purchases'])`
-`mixpanel.people.increment({'purchases': 5})`==> `_meq.mixpanel('people.increment', [{'purchases': 5}])`
-`mixpanel.people.append({'listName': valueToAppend})` ==> `_meq.mixpanel('people.append', [{'listName': valueToAppend}])`
+`mixpanel.people.set({'likes_ice_cream': true})` ==> `_meq.mixpanel('people.set', {'likes_ice_cream': true})`
+`mixpanel.people.set_once({'user_uuid': 'abcd-1234-abcd-1234-abcd'})` ==> `_meq.mixpanel('people.set_once', {'user_uuid': 'abcd-1234-abcd-1234-abcd'})`
+`mixpanel.people.increment('purchases')` ==> `_meq.mixpanel('people.increment', 'purchases')`
+`mixpanel.people.increment({'purchases': 5})`==> `_meq.mixpanel('people.increment', {'purchases': 5})`
+`mixpanel.people.append({'listName': valueToAppend})` ==> `_meq.mixpanel('people.append', {'listName': valueToAppend})`
 
 
 #### `identify()` call
-`mixpanel.identify('username@example.com')` ==> `_meq.mixpanel('identify', ['username@example.com'])`
+`mixpanel.identify('username@example.com')` ==> `_meq.mixpanel('identify', 'username@example.com'])`
 
 
 #### `register()` call
-`mixpanel.register({prop1: value1, prop2: value2})` ==> `_meq.mixpanel('register', [{prop1: value1, prop2: value2}])`
-`mixpanel.register_once({prop1: value1, prop2: value2})` ==> `_meq.mixpanel('register_once', [{prop1: value1, prop2: value2}])`
+`mixpanel.register({prop1: value1, prop2: value2})` ==> `_meq.mixpanel('register', {prop1: value1, prop2: value2})`
+`mixpanel.register_once({prop1: value1, prop2: value2})` ==> `_meq.mixpanel('register_once', {prop1: value1, prop2: value2})`
 
 
 #### `alias()` call
-`mixpanel.alias('new_identitifier')` ==> `_meq.mixpanel('alias', ['new_identifier'])`
+`mixpanel.alias('new_identitifier')` ==> `_meq.mixpanel('alias', 'new_identifier')`
 
 
 ## Browser compatibility
-This has been tested in production on all major browser and back through IE8. I have not tested it on IE <= 7, but the entire wrapper is written in native JavaScript so it should have fairly good backwards compatibility.
+This has been tested in production on Chrome, Safari, Firefox, and IE 8-10.
+
+I have not tested MEQ on IE <= 7, but the entire wrapper is written in native JavaScript so it should have fairly good backwards compatibility.
 
 ## Changelog
+* v0.1.1, 7/30/13 -- Change `_meq.mixpanel()` to use magic `arguments` array and allow for much cleaner calls into MEQ.
 * v0.1.0, 7/30/13 -- Initial release
