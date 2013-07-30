@@ -2,7 +2,7 @@
 ############################
 ### Mixpanel Event Queue ###
 ############################
-VERSION: 0.1.0
+VERSION: 0.1.1
 LICENSE: Apache 2.0
 DESCRIPTION: Event queuing wrapper for the official Mixpanel JavaScript library. For docs & examples, see README or http://github.com/skotzko/mixpanel-event-queue
 WRITTEN BY: Andrew Skotzko (http://github.com/skotzko)
@@ -14,14 +14,17 @@ var _meq = (function(){
     var wrapper = {
         QUEUE_NAME: '_ch_mp_queue',
 
-        mixpanel: function(/* string */ functionName, /* array of args for Mixpanel */ mixpanelArgs) { 
+        mixpanel: function(/* string */ functionName, /* string - optional */ eventName, /* object */ properties) { 
+            var mixPanelArgs = Array.prototype.slice.call(arguments);
+            var functionName = mixPanelArgs.shift();
+
             if (!functionName) {
-                console.error('Must provide a function name to call.')
+                console.error('Must provide a function name to call.');
                 return;
             }
 
-            if (!mixpanelArgs || (Object.prototype.toString.call(mixpanelArgs) === '[object Array]') !== true) {
-                console.error('Must provide an array of args to pass on to Mixpanel, in order desired by their API calls.')
+            if (!mixPanelArgs || (Object.prototype.toString.call(mixPanelArgs) === '[object Array]') !== true) {
+                console.error('Must provide an array of args to pass on to Mixpanel, in order desired by their API calls.');
                 return;
             }
 
@@ -35,13 +38,13 @@ var _meq = (function(){
             // once mixpanel is loaded and has tracking functions available, we hand off to it
             if (mixpanel && mixpanel.__loaded && functionName) {
                 // convert event name string into namespacing array
-                var funcNamespace = functionName.split('.')
+                var funcNamespace = functionName.split('.');
 
                 // loop through funcNamespace to get final tracking function
                 // e.g. ['people', 'set'] === mixpanel.people.set
                 var trackingFunc = mixpanel;
                 var trackingFuncContext = mixpanel;
-                var length = funcNamespace.length
+                var length = funcNamespace.length;
                 for (var i=0; i<length; i++) {
                     if (i == length - 1) {
                         // context in which the function is executed is the direct parent object
@@ -52,7 +55,7 @@ var _meq = (function(){
                 }
 
                 // hand off to Mixpanel
-                trackingFunc.apply(trackingFuncContext, mixpanelArgs);
+                trackingFunc.apply(trackingFuncContext, mixPanelArgs);
 
             } else if (queue) {
                 // if mixpanel does not exist, queue up events
