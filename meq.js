@@ -14,7 +14,7 @@ var _meq = (function(){
     var wrapper = {
         QUEUE_NAME: '_ch_mp_queue',
 
-        mixpanel: function(/* string */ functionName, /* string - optional */ eventName, /* object */ properties) { 
+        mixpanel: function(/* string */ functionName, /* string */ eventName, /* object */ properties) { 
             var mixPanelArgs = Array.prototype.slice.call(arguments);
             var functionName = mixPanelArgs.shift();
 
@@ -23,8 +23,8 @@ var _meq = (function(){
                 return;
             }
 
-            if (!mixPanelArgs || (Object.prototype.toString.call(mixPanelArgs) === '[object Array]') !== true) {
-                console.error('Must provide an array of args to pass on to Mixpanel, in order desired by their API calls.');
+            if (!mixPanelArgs || (Object.prototype.toString.call(mixPanelArgs) === '[object Array]') !== true || mixPanelArgs.length <= 0) {
+                console.error('Must provide arguments to pass on to Mixpanel, in order/format desired by their API calls.');
                 return;
             }
 
