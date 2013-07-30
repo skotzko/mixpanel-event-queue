@@ -1,7 +1,9 @@
 mixpanel-event-queue (MEQ)
 ====================
 Contributors: [skotzko](https://github.com/skotzko)
+
 Version: 0.1.0
+
 Tags: mixpanel, analytics, events, queue, javascript
 
 Mixpanel Event Queue (MEQ) is a native JavaScript wrapper for the [Mixpanel JS API](https://mixpanel.com/docs/integration-libraries/javascript-full-api) that adds support for event queueing.
