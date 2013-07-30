@@ -18,9 +18,9 @@ Many analytics services (e.g. Google Analytics, KISSmetrics) stub out an array w
 
 Because the Mixpanel snippet has linked instantiation / fetching of the library with the queueing function and wrapped them all together so that queueing and instantiation are tightly coupled. 
 
-Granted, the Mixpanel snippet is async but we don't want to source our external JS in the head of our pages if at all possible. So even with the built in async / queueing structure, the Mixpanel snippet still doesn't fully meet what we're looking for (separation of queuing / instantiation). We wanted a way to separate queueing (what MEQ does) from later instantiation / fetching of the script. 
+Granted, the Mixpanel snippet is async but we don't want to source our external JS in the head of our pages if at all possible. So even with the built in async / queueing structure, the Mixpanel snippet still doesn't fully meet what we're looking for (separation of queuing / instantiation).
 
-The MEQ wrapper aims to extend the core Mixpanel JS library with this functionality.
+The MEQ wrapper aims to extend the core Mixpanel JS library with this functionality while keeping the API calls very similar to those of the native library.
 
 ## Overview
 MEQ creates an event queue (if one does not already exist) and pushes events into this queue while the Mixpanel API is not yet fully loaded. 
