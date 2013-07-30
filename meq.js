@@ -6,10 +6,9 @@ VERSION: 0.1.1
 LICENSE: Apache 2.0
 DESCRIPTION: Event queuing wrapper for the official Mixpanel JavaScript library. For docs & examples, see README or http://github.com/skotzko/mixpanel-event-queue
 WRITTEN BY: Andrew Skotzko (http://github.com/skotzko)
-
-**NOTE**: This wrapper assumes you will be loading the standard Mixpanel JS library into the window.mixpanel namespace.
 */
 
+// **NOTE**: This wrapper assumes you will be loading the standard Mixpanel JS library into the window.mixpanel namespace.
 var _meq = (function(){
     var wrapper = {
         QUEUE_NAME: '_ch_mp_queue',
