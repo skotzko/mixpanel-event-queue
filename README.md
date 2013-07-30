@@ -1,4 +1,4 @@
-mixpanel-event-queue
+mixpanel-event-queue (MEQ)
 ====================
 Contributors: [skotzko](https://github.com/skotzko)
 Version: 0.1.0
@@ -26,8 +26,8 @@ After the Mixpanel library is loaded, any calls into MEQ will bypass the queue f
 ## Installation
 1. Clone this repo
 2. Get Mixpanel up and running, [per their docs](https://mixpanel.com/docs/getting-started/step-by-step-integration-tutorial)
-3. Integrate this wrapper into your core JS library.
-4. In your [Mixpanel init config](https://mixpanel.com/docs/integration-libraries/javascript-full-api#init), set the `loaded` parameter to call to `_meq.flush()`. While installing, you may want to set `debug: true` so that you can view Mixpanel API request logs in your JS console.
+3. Load MEQ into the head of your template: `<script type="text/javascript" src="<path_to_MEQ_file.js>"></script>`. You probably want to source MEQ in the head of your template right after sourcing Google Analytics. MEQ is 1.5K unminified.
+4. In your [Mixpanel init config](https://mixpanel.com/docs/integration-libraries/javascript-full-api#init), set the `loaded` parameter to call to `_meq.flush()`. While installing, you may want to set `debug: true` so that you can view Mixpanel API request logs in your JS console. You should still use the native `mixpanel.init()` function rather than wrapping that one with MEQ.
 5. Update your `mixpanel.*` tracking calls to call to the `_meq`. 
 
 
