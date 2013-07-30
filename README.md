@@ -11,19 +11,19 @@ Mixpanel Event Queue (MEQ) is a native JavaScript wrapper for the [Mixpanel JS A
 ## Description
 Provides an event-queueing wrapper for the Mixpanel JS API to ensure tracking calls are safe regardless of when they happen in relation to page / external JS library loading.
 
-### Why use this?
-The minified Mixpanel library is ~25.5kb gzipped and can take up to a few seconds after browser `startFetch` to be fully loaded and available for handling event / tracking calls. 
+## Why use this?
+The minified Mixpanel library is ~25.5K gzipped and can take several seconds after browser `startFetch` to be fully loaded and available for handling event / tracking calls. There is lag and risk of fetch failures with any external resource.
 
-Many analytics services (e.g. Google Analytics, KISSmetrics) stub out an array which acts as a queue while the tracking library loads. The Mixpanel JS API does not natively provide this functionality, and I wanted it to ensure that my tracking calls would not (a) lose data and (b) throw JS errors if the library was not yet loaded.
+Many analytics services (e.g. Google Analytics, KISSmetrics) stub out an array which acts as a queue while the tracking library loads. The Mixpanel JS API does not natively provide this functionality, and I wanted it to ensure that my tracking calls would not (a) lose data and (b) throw errors if I made calls before the library was loaded.
 
-This wrapper aims to extend the Mixpanel JS library with this functionality.
+The MEQ wrapper aims to extend the core Mixpanel JS library with this functionality.
 
 ## Overview
-If one doesn't already exist, MEQ creates an event queue and pushes events into this queue if the Mixpanel API is not yet fully loaded. 
+MEQ creates an event queue (if one does not already exist) and pushes events into this queue while the Mixpanel API is not yet fully loaded. 
 
 Mixpanel provides a callback hook when the library is laoded, which you need to set up to call `_meq.flush()`. This will flush the event queue to the underlying Mixpanel library in same order the events came into the queue.
 
-After the Mixpanel library is loaded, any calls into MEQ will bypass the queue flow straight into Mixpanel's own API.
+After the Mixpanel library is loaded, any calls into MEQ will bypass the queue and flow straight into Mixpanel's own API.
 
 ## Installation
 1. Clone this repo
