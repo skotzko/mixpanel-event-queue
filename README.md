@@ -6,26 +6,26 @@ Version: 0.1.1
 
 Tags: mixpanel, analytics, events, queue, javascript
 
-Mixpanel Event Queue (MEQ) is a native JavaScript wrapper for the [Mixpanel JS API](https://mixpanel.com/docs/integration-libraries/javascript-full-api) that adds support for event queueing.
+Mixpanel Event Queue (MEQ) is a native JavaScript wrapper for the [Mixpanel JS API](https://mixpanel.com/docs/integration-libraries/javascript-full-api) that adds support for event queuing.
 
 ## Description
-Provides an event-queueing wrapper for the Mixpanel JS API to ensure tracking calls are safe regardless of when they happen in relation to page / external JS library loading.
+Provides an event-queuing wrapper for the Mixpanel JS API to ensure tracking calls are safe regardless of when they happen in relation to page / external JS library loading.
 
 ## Why use this?
 The minified Mixpanel library is ~25.5K gzipped and can take several seconds after browser `startFetch` to be fully loaded and available for handling event / tracking calls. There is lag and risk of fetch failures with any external resource.
 
-Many analytics services (e.g. Google Analytics, KISSmetrics) stub out an array which acts as a queue while the tracking library loads. Contrary to what I first believed, it turns out that the Mixpanel library *does* support this functionality, but it is neither documented nor clear when reading their code and docs. So why do I continue to use this, anyway?
+Many analytics services (e.g. Google Analytics, KISSmetrics) stub out an array which acts as a queue while the tracking library loads. Contrary to what I first believed, it turns out that the Mixpanel library *does* support this functionality (sort of), but it is neither documented nor clear when reading their code.
 
-Because the Mixpanel snippet has linked instantiation / fetching of the library with the queueing function and wrapped them all together so that queueing and instantiation are tightly coupled. 
+So why do I continue to use this, anyway?
 
-Granted, the Mixpanel snippet is async but we don't want to source our external JS in the head of our pages if at all possible. So even with the built in async / queueing structure, the Mixpanel snippet still doesn't fully meet what we're looking for (separation of queuing / instantiation).
+Because the Mixpanel snippet has tightly coupled instantiation / fetching of the library with the queuing function. If at all possible, we do not want any browser resources working on 3rd-party assets (even if they are fetched async) early in the page load, so we prefer to create a queue early on, and then instantiate the 3rd-party library to process said queue and take over normal operations later in the page load sequence.
 
 The MEQ wrapper aims to extend the core Mixpanel JS library with this functionality while keeping the API calls very similar to those of the native library.
 
 ## Overview
 MEQ creates an event queue (if one does not already exist) and pushes events into this queue while the Mixpanel API is not yet fully loaded. 
 
-Mixpanel provides a callback hook when the library is laoded, which you need to set up to call `_meq.flush()`. This will flush the event queue to the underlying Mixpanel library in same order the events came into the queue.
+Mixpanel provides a callback hook when the library is loaded, which you need to set up to call `_meq.flush()`. This will flush the event queue to the underlying Mixpanel library in same order the events came into the queue.
 
 After the Mixpanel library is loaded, any calls into MEQ will bypass the queue and flow straight into Mixpanel's own API.
 
