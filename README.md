@@ -6,10 +6,24 @@ Version: 0.1.2
 
 Tags: mixpanel, analytics, events, queue, javascript
 
-Mixpanel Event Queue (MEQ) is a native JavaScript wrapper for the [Mixpanel JS API](https://mixpanel.com/docs/integration-libraries/javascript-full-api) that adds support for event queuing.
+Mixpanel Event Queue (MEQ) is a native JavaScript wrapper for the [Mixpanel JS API](https://mixpanel.com/docs/integration-libraries/javascript-full-api) that adds support for event queuing to aid in optimizing page loads sequences.
 
 ## Description
-Provides an event-queuing wrapper for the Mixpanel JS API to ensure tracking calls are safe regardless of when they happen in relation to page / external JS library loading.
+Provides an event-queuing wrapper for the Mixpanel JS API to (a) help optimize page loading sequence and (b) ensure tracking calls are safe regardless of when they happen in relation to page / external JS library loading.
+
+## Who is this for / not for?
+
+**MEQ is for you if:**
+
+* you are using Mixpanel, and
+* you are trying to optimize your page load sequences / timing (e.g. site with content/JavaScript heavy pages)
+
+**MEQ is not for you if**:
+
+* you aren't using Mixpanel, or
+* you don't have heavy pages, and/or
+* you are not trying to optimize your page load sequences / timing
+
 
 ## Why use this?
 The minified Mixpanel library is ~25.5K gzipped and can take several seconds after browser `startFetch` to be fully loaded and available for handling event / tracking calls. There is lag and risk of fetch failures with any external resource.
