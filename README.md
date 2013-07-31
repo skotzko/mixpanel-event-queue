@@ -1,4 +1,4 @@
-mixpanel-event-queue (MEQ)
+Mixpanel Event Queue (MEQ)
 ====================
 Contributors: [skotzko](https://github.com/skotzko)
 
