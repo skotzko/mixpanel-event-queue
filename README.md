@@ -32,7 +32,7 @@ After the Mixpanel library is loaded, any calls into MEQ will bypass the queue a
 ## Installation
 1. Clone this repo
 2. Get Mixpanel up and running, [per their docs](https://mixpanel.com/docs/getting-started/step-by-step-integration-tutorial)
-3. Load MEQ into the head of your template: `<script type="text/javascript" src="<path_to_MEQ_file.js>"></script>`. You probably want to source MEQ in the head of your template right after sourcing Google Analytics. MEQ is 3.3K raw, and 1.5K when unminified but gzipped.
+3. Load MEQ into the head of your template: `<script type="text/javascript" src="<path_to_MEQ_file.js>"></script>`. You probably want to source MEQ in the head of your template right after sourcing Google Analytics. MEQ is 1.1K minified (version provided), 1.5K when unminified but gzipped, and 3.3K raw.
 4. In your [Mixpanel init config](https://mixpanel.com/docs/integration-libraries/javascript-full-api#init), set the `loaded` parameter to call to `_meq.flush()`. While installing, you may want to set `debug: true` so that you can view Mixpanel API request logs in your JS console. **You should still use the native `mixpanel.init()` function to initialize the Mixpanel library.**
 5. Update your `mixpanel.*` tracking calls to call to `_meq.mixpanel()` with the appropriate params. 
 
