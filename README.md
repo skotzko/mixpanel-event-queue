@@ -2,7 +2,7 @@ mixpanel-event-queue (MEQ)
 ====================
 Contributors: [skotzko](https://github.com/skotzko)
 
-Version: 0.1.1
+Version: 0.1.2
 
 Tags: mixpanel, analytics, events, queue, javascript
 
@@ -32,7 +32,7 @@ After the Mixpanel library is loaded, any calls into MEQ will bypass the queue a
 ## Installation
 1. Clone this repo
 2. Get Mixpanel up and running, [per their docs](https://mixpanel.com/docs/getting-started/step-by-step-integration-tutorial)
-3. Load MEQ into the head of your template: `<script type="text/javascript" src="<path_to_MEQ_file.js>"></script>`. You probably want to source MEQ in the head of your template right after sourcing Google Analytics. MEQ is 1.5K unminified.
+3. Load MEQ into the head of your template: `<script type="text/javascript" src="<path_to_MEQ_file.js>"></script>`. You probably want to source MEQ in the head of your template right after sourcing Google Analytics. MEQ is 3.3K raw, and 1.5K when unminified but gzipped.
 4. In your [Mixpanel init config](https://mixpanel.com/docs/integration-libraries/javascript-full-api#init), set the `loaded` parameter to call to `_meq.flush()`. While installing, you may want to set `debug: true` so that you can view Mixpanel API request logs in your JS console. **You should still use the native `mixpanel.init()` function to initialize the Mixpanel library.**
 5. Update your `mixpanel.*` tracking calls to call to `_meq.mixpanel()` with the appropriate params. 
 
@@ -80,5 +80,6 @@ This has been tested in production on Chrome, Safari, Firefox, and IE 8-10.
 I have not tested MEQ on IE <= 7, but the entire wrapper is written in native JavaScript so it should have fairly good backwards compatibility.
 
 ## Changelog
+* v0.1.2, 7/31/13 -- Provide minified version of MEQ.
 * v0.1.1, 7/30/13 -- Change `_meq.mixpanel()` to use magic `arguments` array and allow for much cleaner calls into MEQ.
 * v0.1.0, 7/30/13 -- Initial release
